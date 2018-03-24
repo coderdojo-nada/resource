@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas Basic</title>
+    <style>
+        #mycanvas {
+            border: 1px solid black;
+        }
+    </style>
+    <script>
+        let ctx;
+        var pitch = 0.2;
+        var rad = 0;
+
+        // 準備作業
+        function init() {
+            // 初期化
+            let canvas = document.getElementById("mycanvas");
+            ctx = canvas.getContext("2d");
+            // 繰り返し(描く)
+            setInterval(paint, 1000);
+        }
+
+        // 描く
+        function paint() {
+            // クリア
+            ctx.clearRect(0, 0, 200, 200);
+
+            // 目
+            // ctx.fillStyle = "blue";
+            // ctx.beginPath(); // begin drawing a new path
+            // ctx.arc(50, 50, 15, 0, Math.PI * 2, true);
+            // ctx.arc(150, 50, 15, 0, Math.PI * 2, true);
+            // ctx.fill();
+
+            // 鼻
+            // ctx.fillStyle = "red";
+            // ctx.beginPath();
+            // ctx.moveTo(100, 75);
+            // ctx.lineTo(75, 125);
+            // ctx.lineTo(125, 125);
+            // ctx.fill();
+
+            // 口
+            // ctx.strokeStyle = "green";
+            // ctx.beginPath();
+            // ctx.save();
+            // ctx.scale(1, 0.5);
+            // ctx.arc(100, 300, 45, Math.PI, 0, true); // デフォルトは時計回り、true指定で反時計周り
+            // ctx.restore();
+            // ctx.closePath();
+            // ctx.stroke();
+
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <canvas id="mycanvas" width="200" height="200"></canvas>
+</body>
+
+</html>

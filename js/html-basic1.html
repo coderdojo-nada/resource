@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>「タイトル」</title>
+    <script>
+        function func01() {
+            //　ここにプログラムを書く
+            let i0 = document.getElementById("i0");
+            let result = i0.value;
+
+            let r0 = document.getElementById("r0");
+            r0.textContent = result;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>
+        <!-- ここに全体の見出しを書く -->
+    </h1>
+    a:<input id="i0" />
+    <button onclick="func01()">実行</button>
+    <p>実行結果</p>
+    <ul>
+        <li>
+            <!-- ここに実行結果の見出しを書く --><span id="r0"></span></li>
+    </ul>
+</body>
+
+</html>

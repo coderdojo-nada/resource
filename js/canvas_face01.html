@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas Basic</title>
+    <style>
+        #mycanvas {
+            border: 1px solid black;
+        }
+    </style>
+    <script>
+        let ctx;
+        var pitch = 0.2;
+        var rad = 0;
+
+        // 初期化
+        function init() {
+            // 初期化
+            let canvas = document.getElementById("mycanvas");
+            ctx = canvas.getContext("2d");
+            // 繰り返し
+            setInterval(paint, 1000);
+        }
+
+        // 描く
+        function paint() {
+            // 枠の初期化
+            ctx.clearRect(0, 0, 500, 500);
+
+            ctx.fillStyle = "blue";
+            ctx.beginPath();
+            ctx.arc(50, 50, Math.random() * 10 + 15, 0, Math.PI * 2, true);
+            ctx.arc(150, 50, Math.random() * 10 + 15, 0, Math.PI * 2, true);
+            ctx.fill();
+
+            ctx.fillStyle = "red";
+            ctx.save();
+            ctx.translate(100, 75);
+            pitch *= ((Math.abs(rad) < 1) ? 1 : -1);
+            rad += pitch;
+            ctx.rotate(rad);
+            ctx.translate(0, 25);
+            ctx.beginPath();
+            ctx.moveTo(0, -25);
+            ctx.lineTo(-25, 25);
+            ctx.lineTo(25, 25);
+            ctx.fill();
+            ctx.restore();
+
+            ctx.strokeStyle = "green";
+            ctx.save();
+            ctx.beginPath();
+            ctx.scale(1, 0.5);
+            ctx.arc(100, 300, Math.random() * 30 + 45, Math.PI, 0, true); // デフォルトは時計回り、true指定で反時計周り
+            ctx.closePath();
+            ctx.stroke();
+            ctx.restore();
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <canvas id="mycanvas" width="500" height="500"></canvas>
+</body>
+
+</html>
