@@ -24,6 +24,10 @@
             };
 
             // 配列の全部の要素に対して、testメソッドを実行
+            a.forEach(function(e) {
+                e.test()
+            });
+            // もっと簡潔に（ラムダ式）
             a.forEach(e => {
                 e.test();
             });
