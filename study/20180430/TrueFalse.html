@@ -1,0 +1,236 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>論理演算</title>
+    <style type="text/css">
+        table {
+            height: 300px;
+            border-collapse: collapse;
+        }
+        
+        td,
+        th {
+            width: 100px;
+            border: solid 1px;
+            text-align: center;
+        }
+        
+        th {
+            background-color: lightgrey;
+        }
+        
+        input {
+            width: 200px;
+            font: bold large/150% "ＭＳ 明朝"
+        }
+        
+        table {
+            float: left;
+        }
+    </style>
+    <script>
+        var fillStyle_venn = '#FFB6C1';
+
+        function func00(a, b) {
+            return eval(document.getElementById("i0").value);
+        }
+
+        function func01() {
+            clear();
+            setTimeout(update, 1000);
+        }
+
+        function clear() {
+            document.getElementById("r0").textContent = "";
+            document.getElementById("r1").textContent = "";
+            document.getElementById("r2").textContent = "";
+            document.getElementById("r3").textContent = "";
+        }
+
+        let a, b, ab, nab;
+
+        function update() {
+            document.getElementById("r0").textContent = ab = func00(true, true);
+            document.getElementById("r1").textContent = a = func00(true, false);
+            document.getElementById("r2").textContent = b = func00(false, true);
+            document.getElementById("r3").textContent = nab = func00(false, false);
+            venn("CLEAR");
+            if (ab && a && b && !nab) {
+                venn("OR");
+            } else if (!ab && !a && !b && nab) {
+                venn("NOR");
+            } else if (ab && !a && !b && !nab) {
+                venn("AND");
+            } else if (!ab && a && b && nab) {
+                venn("NAND");
+            } else if (!ab && a && b && !nab) {
+                venn("XOR");
+            } else if (ab && !a && !b && nab) {
+                venn("XNOR");
+            } else if (!ab && a && !b && !nab) {
+                venn("A-B");
+            } else if (!ab && !a && b && !nab) {
+                venn("B-A");
+            } else if (ab && a && !b && !nab) {
+                venn("A");
+            } else if (ab && !a && b && !nab) {
+                venn("B");
+            } else if (!ab && !a && b && nab) {
+                venn("NOTA");
+            } else if (!ab && a && !b && nab) {
+                venn("NOTB");
+            }
+        }
+
+        function check() {
+            if (document.getElementById("i0").value != null) {
+                return true;
+            }
+        }
+
+        function execute() {
+            document.writeln("execute");
+        }
+
+        /* 各ベン図の図形合成パターン */
+        var gcop = {
+            "OR": ["lighter", "source-atop"],
+            "NOR": ["source-over", "xor"],
+            "AND": ["source-in", "source-atop"],
+            "NAND": ["source-in", "xor"],
+            "XOR": ["xor", "source-atop"],
+            "XNOR": ["xor", "xor"],
+            "A-B": ["destination-out", "source-atop"],
+            "B-A": ["source-out", "source-atop"],
+            "A": ["source-atop", "source-in"],
+            "B": ["copy", "source-in"],
+            "NOTA": ["source-atop", "xor"],
+            "NOTB": ["copy", "xor"],
+            "CLEAR": ["destination-out", "destination-out"],
+        };
+
+        /* ベン図描画 */
+        function venn(type) {
+            // 円１ 定数
+            var x1 = 100;
+            var y1 = 100;
+            var r1 = 80;
+            var s1 = 0;
+            // 円２ 定数
+            var x2 = 210;
+            var y2 = 100;
+            var r2 = 80;
+            var s2 = 0;
+            // 四角 定数
+            var x3 = 0;
+            var y3 = 0;
+            var w = 310;
+            var h = 200;
+
+            var canvas = document.getElementById("venn"); // canvas オブジェクト
+            /* オブジェクトが存在しない、ブラウザが Canvas 未対応の場合 */
+            if (!canvas || !canvas.getContext) {
+                return false; // 処理を終了
+            }
+            var ctx = canvas.getContext('2d'); // 描画コンテキスト
+
+            /* 円１を描画 */
+            ctx.beginPath(); // 線を描く宣言
+            ctx.fillStyle = fillStyle_venn; // 塗りつぶす色やスタイル
+            // 円（中心x, y座標, 半径, 始点, 終点, 時計回り）
+            ctx.arc(x1, y1, r1, s1, Math.PI * 2.0, true);
+            ctx.fill(); // 塗りつぶす
+
+            /* 円２を描画 */
+            ctx.globalCompositeOperation = gcop[type][0]; // 図形の合成方法
+            ctx.beginPath();
+            ctx.fillStyle = fillStyle_venn;
+            ctx.arc(x2, y2, r2, s2, Math.PI * 2.0, true);
+            ctx.fill();
+
+            /* 四角を描画 */
+            ctx.globalCompositeOperation = gcop[type][1]; // 図形の合成方法
+            ctx.beginPath();
+            ctx.fillStyle = fillStyle_venn;
+            ctx.rect(x3, y3, w, h); // 四角（始点x, y座標, 幅, 高さ）
+            ctx.fill();
+
+            /* 線を描画 */
+            ctx.globalCompositeOperation = 'source-over'; // 図形の合成方法
+            ctx.strokeStyle = "#333333"; // 線の色やスタイル
+            ctx.beginPath();
+            ctx.arc(x1, y1, r1, s1, Math.PI * 2.0, true); // 円１
+            ctx.stroke(); // 線を描画
+            ctx.beginPath();
+            ctx.arc(x2, y2, r2, s2, Math.PI * 2.0, true); // 円２
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.rect(x3, y3, w, h); // 四角
+            ctx.stroke();
+
+            /* 文字を描画 */
+            ctx.fillStyle = '#333333'; // 塗りつぶす色やスタイル
+            // フォント（スタイル サイズ 種類）
+            ctx.font = "bold 12pt arial, verdana, sans-serif";
+            ctx.fillText('a', x1 - 5, y1 + 5); // 塗りつぶしのテキスト
+            ctx.fillText('b', x2 + 5, y2 + 5);
+        }
+    </script>
+</head>
+
+<body>
+    <h1>論理演算</h1>
+    <p>論理演算子 - true(真) と false(偽)の演算)
+        <nl>
+            <li>||(or)または</li>
+            <li>&&(and)かつ</li>
+            <li>!(否定)</li>
+        </nl>
+    </p>
+    <p>ビット演算子 - 1(真) と 0(偽)の演算)
+        <nl>
+            <li>|(or)または</li>
+            <li>&(and)かつ</li>
+            <li>^(XOR)排他的論理和</li>
+            <li>~(XOR)否定</li>
+        </nl>
+    </p>
+
+
+    式:<input id="i0" />
+    <button onclick="func01()">実行</button>
+    <p>実行結果</p>
+    <table style="border:solid 1px">
+        <tr>
+            <th>a</th>
+            <th>b</th>
+            <th>論理演算</th>
+        </tr>
+        <tr>
+            <th>true</th>
+            <th>true</th>
+            <td><span id="r0"></span></td>
+        </tr>
+        <tr>
+            <th>true</th>
+            <th>false</th>
+            <td><span id="r1"></span></td>
+        </tr>
+        <tr>
+            <th>false</th>
+            <th>true</th>
+            <td><span id="r2"></span></td>
+        </tr>
+        <tr>
+            <th>false</th>
+            <th>false</th>
+            <td><span id="r3"></span></td>
+        </tr>
+    </table>
+    <canvas id="venn" width="400" height="300"></canvas>
+
+</body>
+
+</html>
