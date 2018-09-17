@@ -1,0 +1,28 @@
+let x = 0 // xの位置
+let y = 0 // yの位置
+let vx = 2 // x方向の速さ
+let vy = 1 // y方向の速さ
+
+// はじめにやること
+function setup() {
+	createCanvas(windowWidth, windowHeight)　// ウィンドウのサイズを背景にする
+	background(100) // 背景をグレーで描画
+}
+
+// 1秒間に60回自動的に呼ばれる処理
+function draw() {
+	background(100) // 背景をグレーで描画
+	rect(0, 0, 600, 600) // 四角形を描く
+	// xの位置を更新
+	x = x + vx // x位置に速度を加算
+	if (x > 600) {
+		x = 0
+	}
+	// yの位置を更新
+	y = y + vy // y位置に速度を加算
+	if (y > 600) {
+		y = 0
+	}
+	// 円を描く(位置とサイズを指定)
+	ellipse(x, y, 20, 20)
+}
